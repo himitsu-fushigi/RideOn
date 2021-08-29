@@ -11,12 +11,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-function LanguageSelector() {
-  const [selectedRadio, setSelectedRadio] = React.useState("");
+// import { useDataLayerValue } from "../Context/DataLayer";
 
+function LanguageSelector({navigation}) {
+  const [selectedLanguage, setSelectedLanguage] = React.useState("");
+
+  //   const [{ language }, dispatch] = useDataLayerValue();
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar translucent barStyle="dark-content" backgroundColor="#fff" />
 
       {/* section => image container */}
       <Image
@@ -30,7 +32,7 @@ function LanguageSelector() {
           style={{
             fontWeight: "bold",
             color: "#202020",
-            fontSize: 15,
+            fontSize: 17,
           }}
         >
           Select Language
@@ -43,6 +45,7 @@ function LanguageSelector() {
               borderBottomColor: "#BEBEBE",
               borderBottomWidth: 0.7,
             }}
+            onPress={() => setSelectedLanguage("english")}
           >
             <Text>English</Text>
             <View
@@ -52,10 +55,15 @@ function LanguageSelector() {
                 borderColor: "#bebebe",
                 borderWidth: 0.7,
                 borderRadius: 50,
+                backgroundColor:
+                  selectedLanguage === "english" ? "#2ECC71" : "#fff",
               }}
             ></View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.languageOptions}>
+          <TouchableOpacity
+            onPress={() => setSelectedLanguage("nepali")}
+            style={styles.languageOptions}
+          >
             <Text>नेपाली</Text>
             <View
               style={{
@@ -64,26 +72,45 @@ function LanguageSelector() {
                 borderColor: "#bebebe",
                 borderWidth: 0.7,
                 borderRadius: 50,
+                backgroundColor:
+                  selectedLanguage === "nepali" ? "#2ECC71" : "#fff",
               }}
             ></View>
           </TouchableOpacity>
         </View>
 
-        <View>
-          <TouchableOpacity style={{
-              backgroundColor: "#2ECC71",
-              width: Dimensions.get("window").width * 0.8,
-              borderRadius: 5,
-              paddingVertical: 10,
-              alignItems: "center",
-              marginVertical: 15
-          }}>
-            <Text style={{color: "#fff"}}>Next</Text>
-          </TouchableOpacity>
-          <Text style={{ fontSize: 12, color: "#949494",textAlign: "center" }}>
-            *You can change language later from settings.
-          </Text>
-        </View>
+        {selectedLanguage !== "" && (
+          <View>
+            <TouchableOpacity
+              style={{
+                backgroundColor: "#2ECC71",
+                width: Dimensions.get("window").width * 0.8,
+                borderRadius: 5,
+                paddingVertical: 15,
+                alignItems: "center",
+                marginVertical: 15,
+              }}
+            >
+              <Text
+                style={{
+                  color: "#fff",
+                  fontSize: 16,
+                  textTransform: "uppercase",
+                  fontWeight: "bold",
+                }}
+              >
+                {selectedLanguage === "english" ? "Next" : "अर्को"}
+              </Text>
+            </TouchableOpacity>
+            <Text
+              style={{ fontSize: 14, color: "#949494", textAlign: "center" }}
+            >
+              {selectedLanguage === "english"
+                ? "*You can change language later from settings."
+                : "*तपाईंले भाषाको परिवर्तन पछी पनि गर्न सक्नु हुन्छ ।"}
+            </Text>
+          </View>
+        )}
       </View>
 
       {/* section => footer Image */}
@@ -124,7 +151,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   languageOptions: {
-    paddingVertical: 11,
+    paddingVertical: 15,
     paddingHorizontal: 13,
     display: "flex",
     flexDirection: "row",
